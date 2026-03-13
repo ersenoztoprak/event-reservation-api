@@ -1,0 +1,38 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:ticketing
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  datasource.hikari:
+    maximum-pool-size: 5
+
+security:
+  jwt:
+    secret: "my-super-secret-key-my-super-secret-key-123456"
+    access-token-expiration-seconds: 900
+    refresh-token-expiration-seconds: 604800
+    issuer: "assesment-api"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
