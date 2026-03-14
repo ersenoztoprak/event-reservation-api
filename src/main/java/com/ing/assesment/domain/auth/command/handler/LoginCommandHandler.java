@@ -6,8 +6,8 @@ import com.ing.assesment.domain.auth.model.User;
 import com.ing.assesment.domain.auth.port.JwtTokenPort;
 import com.ing.assesment.domain.auth.port.PasswordEncoderPort;
 import com.ing.assesment.domain.auth.port.UserRepositoryPort;
-import com.ing.assesment.domain.common.CommandHandler;
 import com.ing.assesment.domain.common.exception.InvalidCredentialsException;
+import com.ing.assesment.domain.common.handler.CommandHandler;
 import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;

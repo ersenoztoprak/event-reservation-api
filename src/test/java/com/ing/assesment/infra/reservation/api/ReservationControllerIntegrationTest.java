@@ -1,5 +1,7 @@
 package com.ing.assesment.infra.reservation.api;
 
+import com.ing.assesment.domain.audit.model.AuditAction;
+import com.ing.assesment.domain.audit.model.AuditResourceType;
 import com.ing.assesment.domain.auth.model.UserRole;
 import com.ing.assesment.infra.audit.persistence.repository.AuditLogJpaRepository;
 import com.ing.assesment.infra.auth.api.request.LoginRequest;
@@ -21,11 +23,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.time.Instant;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class ReservationControllerIntegrationTest extends AbstractIntegrationTest {
 
@@ -595,8 +605,8 @@ class ReservationControllerIntegrationTest extends AbstractIntegrationTest {
         com.ing.assesment.infra.audit.persistence.entity.AuditLogEntity log = logs.get(0);
 
         assertEquals(customer.getId(), log.getActorId());
-        assertEquals("CONFIRM_RESERVATION", log.getAction());
-        assertEquals("RESERVATION", log.getResourceType());
+        assertEquals(AuditAction.CONFIRM_RESERVATION.name(), log.getAction());
+        assertEquals(AuditResourceType.RESERVATION.name(), log.getResourceType());
         assertEquals(String.valueOf(reservation.getId()), log.getResourceId());
         assertNotNull(log.getCreatedAt());
         assertNotNull(log.getIp());

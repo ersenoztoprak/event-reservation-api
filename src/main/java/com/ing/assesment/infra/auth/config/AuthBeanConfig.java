@@ -1,4 +1,4 @@
-package com.ing.assesment.infra.common.configuration;
+package com.ing.assesment.infra.auth.config;
 
 import com.ing.assesment.domain.auth.command.handler.LoginCommandHandler;
 import com.ing.assesment.domain.auth.command.handler.RefreshTokenCommandHandler;
@@ -9,7 +9,6 @@ import com.ing.assesment.domain.auth.port.UserRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-//TODO move auth -> config
 @Configuration
 public class AuthBeanConfig {
     @Bean

@@ -1,8 +1,8 @@
 package com.ing.assesment.domain.event;
 
 
-import com.ing.assesment.domain.common.CommandHandler;
 import com.ing.assesment.domain.common.exception.OptimisticLockConflictException;
+import com.ing.assesment.domain.common.handler.CommandHandler;
 import com.ing.assesment.domain.reservation.command.CreateReservationCommand;
 import com.ing.assesment.domain.reservation.model.Reservation;
 import com.ing.assesment.infra.reservation.command.handler.RetryingCreateReservationCommandHandler;
@@ -12,7 +12,10 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class RetryingCreateReservationCommandHandlerTest {
 

@@ -1,0 +1,20 @@
+spring:
+  jpa:
+    open-in-view: false
+  datasource:
+    url: jdbc:h2:file:/data/assessmentdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

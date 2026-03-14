@@ -5,8 +5,8 @@ import com.ing.assesment.domain.auth.model.TokenPair;
 import com.ing.assesment.domain.auth.model.User;
 import com.ing.assesment.domain.auth.port.JwtTokenPort;
 import com.ing.assesment.domain.auth.port.UserRepositoryPort;
-import com.ing.assesment.domain.common.CommandHandler;
 import com.ing.assesment.domain.common.exception.InvalidRefreshTokenException;
+import com.ing.assesment.domain.common.handler.CommandHandler;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

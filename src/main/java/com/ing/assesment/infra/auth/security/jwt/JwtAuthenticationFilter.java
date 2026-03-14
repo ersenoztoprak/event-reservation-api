@@ -2,7 +2,7 @@ package com.ing.assesment.infra.auth.security.jwt;
 
 import com.ing.assesment.domain.auth.model.UserRole;
 import com.ing.assesment.domain.auth.port.JwtTokenPort;
-import com.ing.assesment.infra.auth.security.SecurityUser;
+import com.ing.assesment.infra.auth.security.model.SecurityUser;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

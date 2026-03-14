@@ -3,7 +3,11 @@ package com.ing.assesment.domain.reservation;
 import com.ing.assesment.domain.auth.model.AuthenticatedUser;
 import com.ing.assesment.domain.auth.model.UserRole;
 import com.ing.assesment.domain.auth.port.CurrentUserPort;
-import com.ing.assesment.domain.common.exception.*;
+import com.ing.assesment.domain.common.exception.EventAlreadyStartedException;
+import com.ing.assesment.domain.common.exception.EventNotPublishedException;
+import com.ing.assesment.domain.common.exception.IdempotencyConflictException;
+import com.ing.assesment.domain.common.exception.IdempotencyKeyRequiredException;
+import com.ing.assesment.domain.common.exception.ReservationCapacityExceededException;
 import com.ing.assesment.domain.event.model.Event;
 import com.ing.assesment.domain.event.port.EventRepositoryPort;
 import com.ing.assesment.domain.idempotency.model.IdempotencyKeyRecord;
@@ -24,10 +28,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CreateReservationCommandHandlerTest {

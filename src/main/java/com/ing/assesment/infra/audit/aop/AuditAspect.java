@@ -2,7 +2,7 @@ package com.ing.assesment.infra.audit.aop;
 
 import com.ing.assesment.domain.audit.model.AuditLog;
 import com.ing.assesment.domain.audit.port.AuditLogRepositoryPort;
-import com.ing.assesment.infra.auth.security.SecurityUser;
+import com.ing.assesment.infra.auth.security.model.SecurityUser;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -35,8 +35,8 @@ public class AuditAspect {
 
         AuditLog auditLog = AuditLog.create(
                 actorId,
-                auditable.action(),
-                auditable.resourceType(),
+                auditable.action().name(),
+                auditable.resourceType().name(),
                 resourceId,
                 ip,
                 userAgent != null ? userAgent : "unknown"

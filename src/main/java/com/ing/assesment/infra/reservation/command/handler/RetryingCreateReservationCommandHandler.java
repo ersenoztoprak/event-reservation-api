@@ -1,7 +1,7 @@
 package com.ing.assesment.infra.reservation.command.handler;
 
-import com.ing.assesment.domain.common.CommandHandler;
 import com.ing.assesment.domain.common.exception.OptimisticLockConflictException;
+import com.ing.assesment.domain.common.handler.CommandHandler;
 import com.ing.assesment.domain.reservation.command.CreateReservationCommand;
 import com.ing.assesment.domain.reservation.model.Reservation;
 import lombok.RequiredArgsConstructor;
@@ -16,18 +16,17 @@ public class RetryingCreateReservationCommandHandler implements CommandHandler<C
 
     @Override
     public Reservation handle(CreateReservationCommand command) {
-        RuntimeException last = null;
 
         for (int i = 0; i < MAX_RETRIES; i++) {
             try {
                 return transactionalHandler.handle(command);
             } catch (OptimisticLockConflictException | ObjectOptimisticLockingFailureException ex) {
-                last = ex instanceof RuntimeException re
-                        ? re
-                        : new OptimisticLockConflictException();
+                if (i == MAX_RETRIES - 1) {
+                    throw new OptimisticLockConflictException();
+                }
             }
         }
 
-        throw last != null ? last : new OptimisticLockConflictException();
+        throw new IllegalStateException("Unreachable code");
     }
 }

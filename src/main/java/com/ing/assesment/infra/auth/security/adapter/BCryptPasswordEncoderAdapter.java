@@ -1,4 +1,4 @@
-package com.ing.assesment.infra.auth.security;
+package com.ing.assesment.infra.auth.security.adapter;
 
 import com.ing.assesment.domain.auth.port.PasswordEncoderPort;
 import lombok.RequiredArgsConstructor;

@@ -1,11 +1,10 @@
 package com.ing.assesment.infra.security.ratelimit;
 
-import com.ing.assesment.infra.auth.security.SecurityUser;
+import com.ing.assesment.infra.auth.security.model.SecurityUser;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -21,27 +20,25 @@ public class RateLimitingFilter extends OncePerRequestFilter {
 
     private final Map<String, RateLimitEntry> store = new ConcurrentHashMap<>();
 
-    private final Map<String, RateLimitRule> rules = Map.of(
-            "POST:/api/auth/login", new RateLimitRule(10, java.time.Duration.ofMinutes(1)),
-            "POST:/api/auth/register", new RateLimitRule(10, java.time.Duration.ofMinutes(1)),
-            "POST:/api/auth/refresh", new RateLimitRule(10, java.time.Duration.ofMinutes(1)),
-            "POST:/api/events/*/reservations", new RateLimitRule(10, java.time.Duration.ofMinutes(1))
-    );
+    public void clear() {
+        store.clear();
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        String ruleKey = resolveRuleKey(request);
-        if (ruleKey == null) {
+        RateLimitPolicy policy = RateLimitPolicy.resolve(request.getMethod(), request.getRequestURI())
+                .orElse(null);
+
+        if (policy == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        RateLimitRule rule = rules.get(ruleKey);
-        String clientKey = buildClientKey(request, ruleKey);
-        String fullKey = ruleKey + "::" + clientKey;
+        String clientKey = buildClientKey(request, policy);
+        String fullKey = policy.name() + "::" + clientKey;
 
         Instant now = Instant.now();
 
@@ -52,7 +49,7 @@ public class RateLimitingFilter extends OncePerRequestFilter {
                 return created;
             }
 
-            Instant windowEnd = existing.getWindowStart().plus(rule.window());
+            Instant windowEnd = existing.getWindowStart().plus(policy.window());
             if (now.isAfter(windowEnd)) {
                 existing.reset(now);
             }
@@ -61,7 +58,7 @@ public class RateLimitingFilter extends OncePerRequestFilter {
             return existing;
         });
 
-        if (entry.getCounter().get() > rule.maxRequests()) {
+        if (entry.getCounter().get() > policy.maxRequests()) {
             response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.getWriter().write("""
@@ -73,28 +70,8 @@ public class RateLimitingFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    public void clear() {
-        store.clear();
-    }
-
-    private String resolveRuleKey(HttpServletRequest request) {
-        String method = request.getMethod();
-        String uri = request.getRequestURI();
-
-        String exact = method + ":" + uri;
-        if (rules.containsKey(exact)) {
-            return exact;
-        }
-
-        if (HttpMethod.POST.matches(method) && uri.matches("^/api/events/\\d+/reservations$")) {
-            return "POST:/api/events/*/reservations";
-        }
-
-        return null;
-    }
-
-    private String buildClientKey(HttpServletRequest request, String ruleKey) {
-        if ("POST:/api/events/*/reservations".equals(ruleKey)) {
+    private String buildClientKey(HttpServletRequest request, RateLimitPolicy policy) {
+        if (policy.scope() == RateLimitScope.USER) {
             Long actorId = extractActorId();
             if (actorId != null) {
                 return "USER:" + actorId;

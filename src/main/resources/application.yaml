@@ -17,10 +17,14 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+    open-in-view: false
 
   datasource.hikari:
     maximum-pool-size: 5
 
+  threads:
+    virtual:
+      enabled: true
 security:
   jwt:
     secret: "my-super-secret-key-my-super-secret-key-123456"

@@ -1,6 +1,8 @@
 package com.ing.assesment.infra.reservation.api;
 
-import com.ing.assesment.domain.common.CommandHandler;
+import com.ing.assesment.domain.audit.model.AuditAction;
+import com.ing.assesment.domain.audit.model.AuditResourceType;
+import com.ing.assesment.domain.common.handler.CommandHandler;
 import com.ing.assesment.domain.reservation.command.CancelReservationCommand;
 import com.ing.assesment.domain.reservation.command.ConfirmReservationCommand;
 import com.ing.assesment.domain.reservation.command.CreateReservationCommand;
@@ -17,7 +19,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
@@ -35,7 +42,7 @@ public class ReservationController {
     @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "403", description = "Forbidden")
     @ApiResponse(responseCode = "409", description = "Conflict")
-    @Auditable(action = "CREATE_RESERVATION", resourceType = "RESERVATION")
+    @Auditable(action = AuditAction.CREATE_RESERVATION, resourceType = AuditResourceType.RESERVATION)
     @PostMapping("/events/{id}/reservations")
     public ResponseEntity<ReservationResponse> create(@PathVariable Long id,
                                                       @RequestHeader(value = "Idempotency-Key", required = false) String idempotencyKey,
@@ -62,7 +69,7 @@ public class ReservationController {
             @ApiResponse(responseCode = "404", description = "Reservation not found"),
             @ApiResponse(responseCode = "409", description = "Invalid reservation state")
     })
-    @Auditable(action = "CONFIRM_RESERVATION", resourceType = "RESERVATION")
+    @Auditable(action = AuditAction.CONFIRM_RESERVATION, resourceType = AuditResourceType.RESERVATION)
     @PostMapping("/reservations/{id}/confirm")
     public ResponseEntity<ReservationResponse> confirm(@PathVariable Long id) {
         Reservation reservation = confirmReservationCommandHandler.handle(
@@ -83,7 +90,7 @@ public class ReservationController {
             @ApiResponse(responseCode = "404", description = "Reservation not found"),
             @ApiResponse(responseCode = "409", description = "Invalid reservation state")
     })
-    @Auditable(action = "CANCEL_RESERVATION", resourceType = "RESERVATION")
+    @Auditable(action = AuditAction.CANCEL_RESERVATION, resourceType = AuditResourceType.RESERVATION)
     @PostMapping("/reservations/{id}/cancel")
     public ResponseEntity<ReservationResponse> cancel(@PathVariable Long id) {
         Reservation reservation = cancelReservationCommandHandler.handle(

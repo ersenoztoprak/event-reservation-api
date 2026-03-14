@@ -1,4 +1,4 @@
-package com.ing.assesment.infra.auth.security;
+package com.ing.assesment.infra.auth.security.model;
 
 import com.ing.assesment.domain.auth.model.UserRole;
 

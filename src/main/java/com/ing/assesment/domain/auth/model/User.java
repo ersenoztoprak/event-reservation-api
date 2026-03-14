@@ -1,6 +1,5 @@
 package com.ing.assesment.domain.auth.model;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,12 +1,11 @@
-package com.ing.assesment.infra.common.configuration;
+package com.ing.assesment.infra.auth.config;
 
 import com.ing.assesment.domain.auth.port.UserRepositoryPort;
-import com.ing.assesment.infra.auth.persistence.UserRepositoryAdapter;
+import com.ing.assesment.infra.auth.persistence.adapter.UserRepositoryAdapter;
 import com.ing.assesment.infra.auth.persistence.repository.UserJpaRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-//TODO move auth -> config
 @Configuration
 public class RepositoryConfig {
     @Bean

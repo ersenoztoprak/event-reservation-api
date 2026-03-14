@@ -7,6 +7,7 @@ import com.ing.assesment.infra.auth.api.request.RegisterRequest;
 import com.ing.assesment.infra.auth.persistence.entity.UserEntity;
 import com.ing.assesment.infra.auth.persistence.repository.UserJpaRepository;
 import com.ing.assesment.infra.common.AbstractIntegrationTest;
+import com.ing.assesment.infra.security.ratelimit.RateLimitPolicy;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,11 +18,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.time.Instant;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.blankOrNullString;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class AuthControllerIntegrationTest extends AbstractIntegrationTest {
@@ -150,7 +151,7 @@ class AuthControllerIntegrationTest extends AbstractIntegrationTest {
 
         String json = objectMapper.writeValueAsString(request);
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < RateLimitPolicy.LOGIN.maxRequests(); i++) {
             mockMvc.perform(post("/api/auth/login")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(json))

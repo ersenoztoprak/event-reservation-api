@@ -1,4 +1,4 @@
-package com.ing.assesment.infra.event.persistence;
+package com.ing.assesment.infra.event.persistence.adapter;
 
 
 import com.ing.assesment.domain.common.exception.OptimisticLockConflictException;

@@ -44,6 +44,11 @@ Key capabilities include:
 
 # Features
 
+## Virtual Threads
+
+The application enables Java 21 virtual threads through Spring Boot configuration.
+This allows request processing to use lightweight threads which improves scalability for blocking workloads such as database calls.
+
 ## Authentication
 - User registration
 - Login with JWT access token
@@ -195,6 +200,14 @@ Start the application:
 
 ```bash
 mvn clean spring-boot:run
+```
+## Docker Compose
+
+The project can also be started with Docker Compose:
+
+```bash
+mvn clean package
+docker compose up --build
 ```
 
 Application endpoints:

@@ -1,8 +1,9 @@
-package com.ing.assesment.infra.auth.security;
+package com.ing.assesment.infra.auth.security.adapter;
 
 import com.ing.assesment.domain.auth.model.AuthenticatedUser;
 import com.ing.assesment.domain.auth.model.UserRole;
 import com.ing.assesment.domain.auth.port.CurrentUserPort;
+import com.ing.assesment.infra.auth.security.model.SecurityUser;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

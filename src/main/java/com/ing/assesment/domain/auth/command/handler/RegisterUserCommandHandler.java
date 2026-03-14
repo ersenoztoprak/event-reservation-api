@@ -4,7 +4,7 @@ import com.ing.assesment.domain.auth.command.RegisterUserCommand;
 import com.ing.assesment.domain.auth.model.User;
 import com.ing.assesment.domain.auth.port.PasswordEncoderPort;
 import com.ing.assesment.domain.auth.port.UserRepositoryPort;
-import com.ing.assesment.domain.common.VoidCommandHandler;
+import com.ing.assesment.domain.common.handler.VoidCommandHandler;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

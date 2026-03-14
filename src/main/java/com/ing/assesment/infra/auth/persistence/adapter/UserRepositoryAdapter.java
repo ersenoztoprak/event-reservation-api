@@ -1,4 +1,4 @@
-package com.ing.assesment.infra.auth.persistence;
+package com.ing.assesment.infra.auth.persistence.adapter;
 
 import com.ing.assesment.domain.auth.model.User;
 import com.ing.assesment.domain.auth.port.UserRepositoryPort;

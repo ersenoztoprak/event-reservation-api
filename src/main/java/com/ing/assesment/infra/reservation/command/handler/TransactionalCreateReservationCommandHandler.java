@@ -1,6 +1,6 @@
 package com.ing.assesment.infra.reservation.command.handler;
 
-import com.ing.assesment.domain.common.CommandHandler;
+import com.ing.assesment.domain.common.handler.CommandHandler;
 import com.ing.assesment.domain.reservation.command.CreateReservationCommand;
 import com.ing.assesment.domain.reservation.model.Reservation;
 import lombok.RequiredArgsConstructor;

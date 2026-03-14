@@ -1,6 +1,8 @@
 package com.ing.assesment.infra.event.api;
 
-import com.ing.assesment.domain.common.CommandHandler;
+import com.ing.assesment.domain.audit.model.AuditAction;
+import com.ing.assesment.domain.audit.model.AuditResourceType;
+import com.ing.assesment.domain.common.handler.CommandHandler;
 import com.ing.assesment.domain.event.command.CreateEventCommand;
 import com.ing.assesment.domain.event.command.PublishEventCommand;
 import com.ing.assesment.domain.event.command.UpdateEventCommand;
@@ -22,7 +24,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
 import java.util.List;
@@ -42,7 +51,7 @@ public class EventController {
     @Operation(summary = "Create draft event")
     @ApiResponse(responseCode = "201", description = "Draft event created")
     @ApiResponse(responseCode = "403", description = "Only organizer or admin can create events")
-    @Auditable(action = "CREATE_EVENT", resourceType = "EVENT")
+    @Auditable(action = AuditAction.CREATE_EVENT, resourceType = AuditResourceType.EVENT)
     @PostMapping
     public ResponseEntity<CreateEventResponse> create(@Valid @RequestBody CreateEventRequest request) {
         Event event = createEventCommandHandler.handle(
@@ -74,7 +83,7 @@ public class EventController {
     @ApiResponse(responseCode = "403", description = "Only owner or admin can update event")
     @ApiResponse(responseCode = "404", description = "Event not found")
     @ApiResponse(responseCode = "409", description = "Concurrent update conflict")
-    @Auditable(action = "UPDATE_EVENT", resourceType = "EVENT")
+    @Auditable(action = AuditAction.UPDATE_EVENT, resourceType = AuditResourceType.EVENT)
     @PutMapping("/{id}")
     public ResponseEntity<EventResponse> update(@PathVariable Long id,
                                                 @Valid @RequestBody UpdateEventRequest request) {
@@ -98,7 +107,7 @@ public class EventController {
     @ApiResponse(responseCode = "403", description = "Only owner or admin can publish the event")
     @ApiResponse(responseCode = "404", description = "Event not found")
     @ApiResponse(responseCode = "409", description = "Event is already published or update conflict occurred")
-    @Auditable(action = "PUBLISH_EVENT", resourceType = "EVENT")
+    @Auditable(action = AuditAction.PUBLISH_EVENT, resourceType = AuditResourceType.EVENT)
     @PostMapping("/{id}/publish")
     public ResponseEntity<EventResponse> publish(@PathVariable Long id,
                                                  @Valid @RequestBody PublishEventRequest request) {

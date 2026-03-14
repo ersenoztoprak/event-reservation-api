@@ -2,8 +2,8 @@ package com.ing.assesment.domain.event.query.handler;
 
 import com.ing.assesment.domain.auth.model.AuthenticatedUser;
 import com.ing.assesment.domain.auth.port.CurrentUserPort;
-import com.ing.assesment.domain.common.CommandHandler;
 import com.ing.assesment.domain.common.exception.AccessDeniedException;
+import com.ing.assesment.domain.common.handler.CommandHandler;
 import com.ing.assesment.domain.event.model.Event;
 import com.ing.assesment.domain.event.port.EventRepositoryPort;
 import com.ing.assesment.domain.event.query.ListEventsQuery;

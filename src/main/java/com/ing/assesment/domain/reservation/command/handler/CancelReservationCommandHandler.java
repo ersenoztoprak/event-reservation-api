@@ -2,9 +2,9 @@ package com.ing.assesment.domain.reservation.command.handler;
 
 import com.ing.assesment.domain.auth.model.AuthenticatedUser;
 import com.ing.assesment.domain.auth.port.CurrentUserPort;
-import com.ing.assesment.domain.common.CommandHandler;
 import com.ing.assesment.domain.common.exception.AccessDeniedException;
 import com.ing.assesment.domain.common.exception.ReservationNotFoundException;
+import com.ing.assesment.domain.common.handler.CommandHandler;
 import com.ing.assesment.domain.reservation.command.CancelReservationCommand;
 import com.ing.assesment.domain.reservation.model.Reservation;
 import com.ing.assesment.domain.reservation.port.ReservationRepositoryPort;

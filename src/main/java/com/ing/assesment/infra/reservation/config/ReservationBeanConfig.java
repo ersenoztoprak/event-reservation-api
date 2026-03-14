@@ -1,7 +1,7 @@
 package com.ing.assesment.infra.reservation.config;
 
 import com.ing.assesment.domain.auth.port.CurrentUserPort;
-import com.ing.assesment.domain.common.CommandHandler;
+import com.ing.assesment.domain.common.handler.CommandHandler;
 import com.ing.assesment.domain.event.port.EventRepositoryPort;
 import com.ing.assesment.domain.idempotency.port.IdempotencyKeyRepositoryPort;
 import com.ing.assesment.domain.idempotency.port.RequestHashPort;

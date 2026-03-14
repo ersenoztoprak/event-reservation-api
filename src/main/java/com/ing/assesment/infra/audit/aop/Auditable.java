@@ -1,6 +1,9 @@
 package com.ing.assesment.infra.audit.aop;
 
 
+import com.ing.assesment.domain.audit.model.AuditAction;
+import com.ing.assesment.domain.audit.model.AuditResourceType;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,7 +15,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Auditable {
 
-    String action();
+    AuditAction action();
 
-    String resourceType();
+    AuditResourceType resourceType();
 }

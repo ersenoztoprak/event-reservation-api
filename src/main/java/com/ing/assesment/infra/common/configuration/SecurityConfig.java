@@ -20,6 +20,7 @@ public class SecurityConfig {
                                            RateLimitingFilter rateLimitingFilter) throws Exception {
 
         http
+                //TODO
                 .csrf(AbstractHttpConfigurer::disable) // H2 Console için CSRF kapalı
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin) // iframe kullanımına izin
